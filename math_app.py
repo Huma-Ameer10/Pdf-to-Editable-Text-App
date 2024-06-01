@@ -6,14 +6,16 @@ import vertexai.preview.generative_models as generative_models
 from google.cloud import storage
 from google.oauth2 import id_token
 from google.auth.transport import requests
-from httpx_oauth.clients.google import GoogleOAuth2
-from google.api_core.retry import Retry
+from google.oauth2 import service_account
+import tempfile
 
+# Load credentials from secrets.toml
+creds = st.secrets.g_credentials
 
-CLIENT_ID = st.secrets.g_credentials.CLIENT_ID
-CLIENT_SECRET = st.secrets.g_credentials.CLIENT_SECRET
-REDIRECT_URI = st.secrets.g_credentials.REDIRECT_URI
-
+# Create a temporary JSON file containing the credentials
+with tempfile.NamedTemporaryFile(mode='w', suffix='.json') as f:
+    creds.serialize(f.name)
+    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = f.name
 
 # Initialize the Streamlit app
 st.title("PDF Parser App")
@@ -21,19 +23,14 @@ st.title("PDF Parser App")
 # Create a file uploader
 uploaded_pdf = st.file_uploader("Upload a PDF file", type=["pdf"])
 
-
 # Create a button to trigger the parsing
 parse_button = st.button("Parse PDF")
 
 # Define the GCS bucket and credentials
 GCS_BUCKET_NAME = "myfirstbucketof"
-GCS_CREDENTIALS = st.secrets.g_credentials
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = GCS_CREDENTIALS
 
 # Create a GCS client
-client = storage.Client.from_service_account_json(GCS_CREDENTIALS)
-
-    
+client = storage.Client.from_service_account_json(os.environ['GOOGLE_APPLICATION_CREDENTIALS'])
 
 # Define the Vertex AI model and settings
 vertexai.init(project="poised-climate-423605-k7", location="us-central1")
@@ -50,21 +47,18 @@ safety_settings = {
     generative_models.HarmCategory.HARM_CATEGORY_HARASSMENT: generative_models.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
 }
 
-
 # Define the parsing function
 def parse_pdf(uploaded_pdf):
     # Upload the PDF file to GCS
-    
     bucket = client.get_bucket(GCS_BUCKET_NAME)
     blob = bucket.blob(uploaded_pdf.name)
     
     retry = Retry(deadline=300)  # 5 minutes timeout
     blob.upload_from_file(uploaded_pdf, retry=retry, timeout=300)  # Set appropriate timeout
-        
-
+    
     # Create a Part object from the GCS URI
     document1 = Part.from_uri(f"gs://{GCS_BUCKET_NAME}/{uploaded_pdf.name}", mime_type="application/pdf")
-    #vertexai.init(project="poised-climate-423605-k7", location="us-central1",credentials=credentials)
+    
     responses = model.generate_content(
         [document1, """Parse the given pdf"""],
         generation_config=generation_config,
