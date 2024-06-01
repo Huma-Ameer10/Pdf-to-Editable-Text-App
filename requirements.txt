@@ -1,0 +1,7 @@
+streamlit
+vertexai
+google-cloud-storage
+google-auth
+google-auth-oauthlib
+httpx-oauth
+dotenv
