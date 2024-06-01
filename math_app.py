@@ -7,15 +7,9 @@ from google.cloud import storage
 from google.oauth2 import id_token
 from google.auth.transport import requests
 from httpx_oauth.clients.google import GoogleOAuth2
-from dotenv import load_dotenv
-from auth import *
 from google.api_core.retry import Retry
 
-# env_dir = os.environ['CONDA_PREFIX']
-# env_path = os.path.join(env_dir, '.env')
-# load_dotenv(env_path)
 
-#sload_dotenv('.env')
 CLIENT_ID = st.secrets['CLIENT_ID']
 CLIENT_SECRET = st.secrets['CLIENT_SECRET']
 REDIRECT_URI = st.secrets['REDIRECT_URI']
