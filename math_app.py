@@ -11,14 +11,14 @@ from dotenv import load_dotenv
 from auth import *
 from google.api_core.retry import Retry
 
-env_dir = os.environ['CONDA_PREFIX']
-env_path = os.path.join(env_dir, '.env')
-load_dotenv(env_path)
+# env_dir = os.environ['CONDA_PREFIX']
+# env_path = os.path.join(env_dir, '.env')
+# load_dotenv(env_path)
 
 #sload_dotenv('.env')
-CLIENT_ID = os.environ['CLIENT_ID']
-CLIENT_SECRET = os.environ['CLIENT_SECRET']
-REDIRECT_URI = os.environ['REDIRECT_URI']
+CLIENT_ID = st.secrets['CLIENT_ID']
+CLIENT_SECRET = st.secrets['CLIENT_SECRET']
+REDIRECT_URI = st.secrets['REDIRECT_URI']
 
 
 # Initialize the Streamlit app
@@ -33,7 +33,7 @@ parse_button = st.button("Parse PDF")
 
 # Define the GCS bucket and credentials
 GCS_BUCKET_NAME = "myfirstbucketof"
-GCS_CREDENTIALS = "D:\Math App\poised-climate-423605-k7-d67d0b1391d2.json"
+GCS_CREDENTIALS = st.secrets.gcs-credentials
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = GCS_CREDENTIALS
 
 # Create a GCS client
