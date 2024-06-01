@@ -10,9 +10,9 @@ from httpx_oauth.clients.google import GoogleOAuth2
 from google.api_core.retry import Retry
 
 
-CLIENT_ID = st.secrets.g-credentials.CLIENT_ID
-CLIENT_SECRET = st.secrets.g-credentials.CLIENT_SECRET
-REDIRECT_URI = st.secrets.g-credentials.REDIRECT_URI
+CLIENT_ID = st.secrets.g_credentials.CLIENT_ID
+CLIENT_SECRET = st.secrets.g_credentials.CLIENT_SECRET
+REDIRECT_URI = st.secrets.g_credentials.REDIRECT_URI
 
 
 # Initialize the Streamlit app
@@ -27,7 +27,7 @@ parse_button = st.button("Parse PDF")
 
 # Define the GCS bucket and credentials
 GCS_BUCKET_NAME = "myfirstbucketof"
-GCS_CREDENTIALS = st.secrets.g-credentials
+GCS_CREDENTIALS = st.secrets.g_credentials
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = GCS_CREDENTIALS
 
 # Create a GCS client
