@@ -7,7 +7,7 @@ from google.cloud import storage
 from google.oauth2 import id_token
 from google.auth.transport import requests
 from google.oauth2 import service_account
-
+from st_files_connection import FilesConnection
 from httpx_oauth.clients.google import GoogleOAuth2
 from google.api_core.retry import Retry
 
@@ -37,7 +37,7 @@ GCS_BUCKET_NAME = "myfirstbucketof"
 
 # Create API client.
 credentials = service_account.Credentials.from_service_account_info(
-    st.secrets["gcs"]
+    st.secrets["gcs_connections"]
 )
 client = storage.Client(credentials=credentials)    
 
