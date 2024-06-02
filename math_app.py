@@ -12,9 +12,9 @@ from httpx_oauth.clients.google import GoogleOAuth2
 from google.api_core.retry import Retry
 
 
-CLIENT_ID = st.secrets.g_credentials.CLIENT_ID
-CLIENT_SECRET = st.secrets.g_credentials.CLIENT_SECRET
-REDIRECT_URI = st.secrets.g_credentials.REDIRECT_URI
+CLIENT_ID = st.secrets["CLIENT_ID"]
+CLIENT_SECRET = st.secrets["CLIENT_SECRET"]
+REDIRECT_URI = st.secrets["REDIRECT_URI"]
 
 
 # Initialize the Streamlit app
@@ -37,7 +37,7 @@ GCS_BUCKET_NAME = "myfirstbucketof"
 
 # Create API client.
 credentials = service_account.Credentials.from_service_account_info(
-    st.secrets["gcp_service_account"]
+    st.secrets["gcs"]
 )
 client = storage.Client(credentials=credentials)    
 
