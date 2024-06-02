@@ -12,9 +12,9 @@ from httpx_oauth.clients.google import GoogleOAuth2
 from google.api_core.retry import Retry
 
 
-CLIENT_ID = st.secrets["CLIENT_ID"]
-CLIENT_SECRET = st.secrets["CLIENT_SECRET"]
-REDIRECT_URI = st.secrets["REDIRECT_URI"]
+CLIENT_ID = st.secrets.gcs_connections.CLIENT_ID
+CLIENT_SECRET = st.secrets.gcs_connections.CLIENT_SECRET
+REDIRECT_URI = st.secrets.gcs_connections.REDIRECT_URI
 
 
 # Initialize the Streamlit app
